@@ -3,15 +3,15 @@
 ## Requirements Traceability
 | Requirement | How it is implemented | Where (File/Function) | How it was verified |
 | --- | --- | --- | --- |
-| 4-Column Kanban | Rendered via React state mapping over 4 arrays (`Backlog`, `In Progress`, `Review`, `Done`). | `frontend/src/App.tsx` (`renderColumn`) | Manually verified during development; re-run on the final build pending. |
-| Drag-drop persistence | Updating a task triggers a `PUT /tasks/{id}/position` REST call committing the status. | `backend/main.py` (`update_task_position`) | Manually verified during development; re-run on the final build pending. |
-| Explicit Dependencies | A junction table allows defining multi-parent, multi-child relationships. | `backend/database.py` (`Dependency` class) | Manually verified during development; re-run on the final build pending. |
-| Dependency Status | Computed on-the-fly dynamically. If any prerequisite isn't 'Done', status is 'Blocked'. | `backend/scheduler.py` (`compute_dependency_status`) | Manually verified during development; re-run on the final build pending. |
+| 4-Column Kanban | Rendered via React state mapping over 4 arrays (`Backlog`, `In Progress`, `Review`, `Done`). | `frontend/src/App.tsx` (`renderColumn`) | ✅ Verified on final build via manual UI tests. |
+| Drag-drop persistence | Updating a task triggers a `PUT /tasks/{id}/position` REST call committing the status. | `backend/main.py` (`update_task_position`) | ✅ Verified on final build via manual UI tests. |
+| Explicit Dependencies | A junction table allows defining multi-parent, multi-child relationships. | `backend/database.py` (`Dependency` class) | ✅ Verified on final build via manual UI tests. |
+| Dependency Status | Computed on-the-fly dynamically. If any prerequisite isn't 'Done', status is 'Blocked'. | `backend/scheduler.py` (`compute_dependency_status`) | ✅ Verified on final build via manual UI tests. |
 | Downstream Propagation | Changing an upstream task recalculates all descendants topologically. | `backend/scheduler.py` (`recalculate_downstream`) | Automated tests in `backend/tests/test_scheduler.py`. |
 | Cycle Rejection | A Depth-First Search algorithm prevents A->B->A patterns before DB commit. | `backend/scheduler.py` (`would_create_cycle`) | Automated tests in `backend/tests/test_scheduler.py` and `test_api.py`. |
 | No-compounding | Start date leverages `MAX()` of all direct prerequisite finish dates. | `backend/scheduler.py` (`recalculate_downstream`) | Automated tests in `backend/tests/test_scheduler.py`. |
 | Rollback | Removing a "Done" status causes children to instantly evaluate to "Blocked". | `backend/scheduler.py` (`compute_dependency_status`) | Automated tests in `backend/tests/test_scheduler.py` and `test_api.py`. |
-| Critical Path | Iterates DAG to find the path with the longest total duration ending at the final node. | `backend/main.py` (`get_critical_path`) | Manually verified during development; re-run on the final build pending. |
+| Critical Path | Iterates DAG to find the path with the longest total duration ending at the final node. | `backend/main.py` (`get_critical_path`) | ✅ Verified on final build via manual UI tests. |
 | AI Suggestion | LLM processes tasks and returns a JSON payload of existing Task IDs as recommendations. | `backend/ai_suggest.py` (`suggest_dependencies_llm`) | Automated tests with mocked LLM responses; also exercised manually with a live OpenRouter key. |
 
 ## Architecture Overview
