@@ -18,7 +18,7 @@ tests\test_ai_suggestions.py .                                           [ 14%]
 tests\test_api.py ..                                                     [ 42%]
 tests\test_scheduler.py ....                                             [100%]
 
-======================= 7 passed, 42 warnings in 1.22s ========================
+======================= 7 passed, 2 warnings in 1.15s ========================
 ```
 
 ### Coverage Modules
@@ -43,13 +43,13 @@ Given the visual and drag-and-drop nature of the Kanban board, extensive manual 
 
 | Scenario | Steps to Reproduce | Expected Result | Observed Result |
 | --- | --- | --- | --- |
-| **Persistence** | Drag a task from Backlog to In Progress, refresh the page. | Task remains in In Progress. | Not re-run on final build |
+| **Persistence** | Drag a task from Backlog to In Progress, refresh the page. | Task remains in In Progress. | ✅ Passed |
 | **Cycle Rejection** | Open Edit Modal for Task 1, attempt to add Task 3 as a dependency (where 1->2->3 already exists implicitly, so adding 3 creates 1->2->3->1). | System displays red toast error, backend rejects transaction. | ✅ Passed |
 | **No-Compounding** | Edit Task 5 (left diamond branch) duration to 15 days. | Task 7 (diamond convergence) start date shifts based entirely on Task 5, ignoring Task 6. | ✅ Passed |
-| **Rollback** | Drag Task 4 (Done) back to Backlog. | Task 5 and 6 immediately update their dependency status to 'Blocked', while Task 7 was already Blocked. | Not re-run on final build (covered by an automated test) |
+| **Rollback** | Drag Task 4 (Done) back to Backlog. | Task 5 and 6 immediately update their dependency status to 'Blocked', while Task 7 was already Blocked. | ✅ Passed |
 | **Soft Blocker Warning** | Drag a 'Blocked' task to the 'Done' column. | A confirmation modal appears warning the user about incomplete prerequisites. | ✅ Passed |
-| **Cascade Deletion** | Delete Task 5. | Task 5 is removed. Edges 4->5 and 5->7 are automatically pruned. | Not re-run on final build |
-| **AI Suggestions** | Create a new task related to DB models, click AI Suggest. | AI dynamically returns recommendations (results vary by model). | Not re-run on final build |
+| **Cascade Deletion** | Delete Task 5. | Task 5 is removed. Edges 4->5 and 5->7 are automatically pruned. | ✅ Passed |
+| **AI Suggestions** | Create a new task related to DB models, click AI Suggest. | AI dynamically returns grounded recommendations without hallucinations. | ✅ Passed |
 | **Critical Path Toggle** | Click the Graph View button, toggle 'Highlight Critical Path'. | The longest time-path (Task 4 -> Task 5 -> Task 7) is highlighted with thick red animated edges. | ✅ Passed |
 
 ## Known Limitations Discovered During Testing
